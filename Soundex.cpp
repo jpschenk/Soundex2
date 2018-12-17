@@ -7,7 +7,7 @@
 
     string Soundex::zeroPad(const string& word) const
     {
-        auto zerosNeeded = 4 - word.length();
+        auto zerosNeeded = MaxCodeLength - word.length();
         return word + string(zerosNeeded, '0');
     }
 
@@ -28,11 +28,27 @@ string Soundex::tail(const string &word) const
 
 string Soundex::encodeDigits(const string &word) const
 {
-    if(word.empty())
+    string encoding;
+
+    for (auto letter : word)
     {
-        return "";
+        if (isComplete(encoding))
+        {
+            break;
+        }
+
+        if (encodeDigit(letter) != lastDigit(encoding))
+        {
+            encoding += encodeDigit(letter);
+        }
     }
-    return encodeDigit(word.front());
+
+    return encoding;
+}
+
+bool Soundex::isComplete(const string &encoding) const
+{
+    return encoding.length() == MaxCodeLength - 1;
 }
 
 string Soundex::encodeDigit(char letter) const
@@ -63,6 +79,15 @@ string Soundex::encodeDigit(char letter) const
 
 
     return it == encoding.end() ? "" : encoding.find(letter)->second;
+}
+
+string Soundex::lastDigit(const string &encoding) const
+{
+    if (encoding.empty())
+    {
+        return "";
+    }
+    return std::string(1, encoding.back());
 }
 
 

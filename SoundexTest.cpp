@@ -33,7 +33,20 @@ TEST_F(SoundexEncoding, IgnoreSpecialCharacters)
     ASSERT_THAT(soundex.encode("A#"), Eq("A000"));
 }
 
-TEST_F(SoundexEncoding, ReplaceMultipleConsonantsWithDigits)
+TEST_F(SoundexEncoding, EncodeMultipleCharacters)
 {
     ASSERT_THAT(soundex.encode("Acdl"), Eq("A234"));
+}
+
+TEST_F(SoundexEncoding, LimitLengthToFourCharacters)
+{
+    ASSERT_THAT(soundex.encode("Acdlb").length(), Eq(4u));
+}
+
+TEST_F(SoundexEncoding, CombineDuplicateEncodings)
+{
+    ASSERT_THAT(soundex.encodeDigit('b'), Eq(soundex.encodeDigit('f')));
+    ASSERT_THAT(soundex.encodeDigit('x'), Eq(soundex.encodeDigit('g')));
+    ASSERT_THAT(soundex.encodeDigit('d'), Eq(soundex.encodeDigit('t')));
+    ASSERT_THAT(soundex.encode("Abfxgdt"), Eq("A123"));
 }
