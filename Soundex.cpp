@@ -13,7 +13,7 @@
 
     string Soundex::encode(const string& word) const
     {
-        return zeroPad(head(word) + encodeDigits(tail(word)));
+        return zeroPad(upperFront(head(word)) + encodeDigits(tail(word)));
     }
 
 string Soundex::head(const string &word) const
@@ -37,7 +37,8 @@ string Soundex::encodeDigits(const string &word) const
             break;
         }
 
-        if (encodeDigit(letter) != lastDigit(encoding))
+        auto digit = encodeDigit(letter);
+        if (digit != NotADigit && digit != lastDigit(encoding))
         {
             encoding += encodeDigit(letter);
         }
@@ -75,20 +76,28 @@ string Soundex::encodeDigit(char letter) const
             {'r', "6"}
     };
 
-    auto it = encoding.find(letter);
-
-
-    return it == encoding.end() ? "" : encoding.find(letter)->second;
+    auto it = encoding.find(lower(letter));
+    return it == encoding.end() ? NotADigit : encoding.find(letter)->second;
 }
 
 string Soundex::lastDigit(const string &encoding) const
 {
     if (encoding.empty())
     {
-        return "";
+        return NotADigit;
     }
     return std::string(1, encoding.back());
 }
+
+string Soundex::upperFront(const string &word) const
+{
+    return std::string(1, toupper(static_cast<unsigned char>(word.front())));
+}
+
+//char Soundex::lower(char c) const
+//{
+//    return tolower(static_cast<unsigned char>(c));
+//}
 
 
 
