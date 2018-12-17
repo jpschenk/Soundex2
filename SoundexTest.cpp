@@ -35,5 +35,5 @@ TEST_F(SoundexEncoding, IgnoreSpecialCharacters)
 
 TEST_F(SoundexEncoding, ReplaceMultipleConsonantsWithDigits)
 {
-    ASSERT_THAT(soundex.encode("Acdl"), Eq("A000"));
+    ASSERT_THAT(soundex.encode("Acdl"), Eq("A234"));
 }

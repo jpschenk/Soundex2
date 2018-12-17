@@ -13,7 +13,7 @@
 
     string Soundex::encode(const string& word) const
     {
-        return zeroPad(head(word) + encodeDigits(word));
+        return zeroPad(head(word) + encodeDigits(tail(word)));
     }
 
 string Soundex::head(const string &word) const
@@ -21,14 +21,18 @@ string Soundex::head(const string &word) const
     return word.substr(0, 1);
 }
 
+string Soundex::tail(const string &word) const
+{
+    return word.substr(1);
+}
+
 string Soundex::encodeDigits(const string &word) const
 {
-    if (word.length() > 1)
+    if(word.empty())
     {
-        return encodeDigit(word[1]);
+        return "";
     }
-
-    return "";
+    return encodeDigit(word.front());
 }
 
 string Soundex::encodeDigit(char letter) const
@@ -60,4 +64,6 @@ string Soundex::encodeDigit(char letter) const
 
     return it == encoding.end() ? "" : encoding.find(letter)->second;
 }
+
+
 
