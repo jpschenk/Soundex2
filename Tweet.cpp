@@ -10,6 +10,11 @@ Tweet::Tweet(const string &msg, const string &userName)
 {
     message = msg;
     user = userName;
+
+    if (!isValid(user))
+    {
+        throw InvalidUserException(user);
+    }
 }
 
 bool Tweet::operator<(const Tweet &rhs) const
@@ -33,4 +38,9 @@ bool Tweet::operator==(const Tweet &rhs) const {
 
 bool Tweet::operator!=(const Tweet &rhs) const {
     return !(rhs == *this);
+}
+
+bool Tweet::isValid(const string &user) const
+{
+    return '@' == user[0];
 }
